@@ -1,0 +1,377 @@
+prompt_version,registry_prompt_name,registry_prompt_version,question_id,question,model_name,response_model,start_time_utc,end_time_utc,response_status,http_status_code,finish_reason,latency_seconds,input_tokens,answer_tokens,thought_tokens,output_tokens,total_tokens,input_cost,output_cost,total_cost,currency,is_valid_json,validation_error,mlflow_run_id,trace_id,response_text
+v1,eduassist-academic-qa,1,Q1,What is the difference between supervised and unsupervised learning?,gemini-3.1-flash-lite,gemini-3.1-flash-lite,2026-11-03T11:23:27.432223+00:00,2026-11-03T11:23:29.892331+00:00,success,200,STOP,2.46009670800413,20,632,0,632,652,5e-06,0.000948,0.000953,USD,False,not valid JSON: Expecting value at character 0,e5ce614647464a48a7f268e8cd3a3606,tr-6e3acf294955c1ebb2fb2e9dc0a14e5c,"To understand the difference between supervised and unsupervised learning, the easiest way to think about it is by looking at **whether the data has a ""teacher"" (labels) or not.**
+
+Here is the breakdown:
+
+---
+
+### 1. Supervised Learning (Learning with a Teacher)
+In supervised learning, the algorithm is trained on a **labeled dataset**. This means that for every input data point, the correct answer (the ""label"") is already provided.
+
+*   **How it works:** The model makes a prediction, compares it to the actual label, and adjusts itself to minimize the error. It is like a student learning with an answer key.
+*   **The Goal:** To learn a mapping function from inputs to outputs so that when you give the model new, unseen data, it can predict the correct label.
+*   **Common Examples:**
+    *   **Classification:** Sorting emails into ""Spam"" or ""Not Spam.""
+    *   **Regression:** Predicting the price of a house based on its square footage and location.
+
+### 2. Unsupervised Learning (Learning without a Teacher)
+In unsupervised learning, the algorithm is given **unlabeled data**. There is no ""answer key."" The model must explore the data on its own to find hidden patterns, structures, or relationships.
+
+*   **How it works:** The model looks for similarities, differences, or groupings within the data without being told what those groups represent. It is like a child playing with blocks and sorting them by color or shape without being told to do so.
+*   **The Goal:** To discover the underlying structure of the data.
+*   **Common Examples:**
+    *   **Clustering:** A retail store grouping customers into segments based on their purchasing habits (e.g., ""budget shoppers"" vs. ""luxury buyers"").
+    *   **Association:** A grocery store discovering that people who buy bread often buy butter (Market Basket Analysis).
+
+---
+
+### Summary Comparison Table
+
+| Feature | Supervised Learning | Unsupervised Learning |
+| :--- | :--- | :--- |
+| **Data Type** | Labeled data (Input + Output) | Unlabeled data (Input only) |
+| **Goal** | Predict outcomes | Find hidden patterns/structures |
+| **Feedback** | Direct feedback (error correction) | No feedback |
+| **Complexity** | Simpler to evaluate accuracy | Harder to evaluate (subjective) |
+
+### The ""Real World"" Analogy
+*   **Supervised:** Imagine a teacher showing you 100 pictures of cats and 100 pictures of dogs, telling you which is which. Eventually, you learn the features of a cat versus a dog and can identify a new picture correctly.
+*   **Unsupervised:** Imagine being given 200 pictures of animals you’ve never seen before and being told to ""sort them into groups."" You might group them by ear shape, fur color, or size, even if you don't know the names of the animals."
+v1,eduassist-academic-qa,1,Q2,Why is feature scaling important before training a machine learning model?,gemini-3.1-flash-lite,gemini-3.1-flash-lite,2026-11-03T11:23:29.896974+00:00,2026-11-03T11:23:33.047489+00:00,success,200,STOP,3.1505047919927165,22,703,0,703,725,5.5e-06,0.0010544999999999999,0.00106,USD,False,not valid JSON: Expecting value at character 0,e5ce614647464a48a7f268e8cd3a3606,tr-ee809b2e9aa1be688fff0105ea84f32d,"Feature scaling is a critical preprocessing step in machine learning because most algorithms calculate the distance between data points or use gradient-based optimization. If your features have different scales, the model can become biased or fail to converge.
+
+Here are the three primary reasons why feature scaling is important:
+
+### 1. Preventing Feature Dominance (Distance-Based Algorithms)
+Algorithms like **K-Nearest Neighbors (KNN)**, **Support Vector Machines (SVM)**, and **K-Means Clustering** rely on calculating the distance (usually Euclidean distance) between data points.
+
+*   **The Problem:** Imagine a dataset with two features: ""Age"" (ranging from 0 to 100) and ""Annual Income"" (ranging from $20,000 to $200,000). 
+*   **The Impact:** When calculating distance, the ""Income"" feature will have a massive numerical impact, while ""Age"" will be virtually ignored because its values are so small in comparison. The model will effectively treat Income as being thousands of times more important than Age, even if Age is actually more predictive. Scaling ensures both features contribute equally to the distance calculation.
+
+### 2. Speeding Up Gradient Descent
+Algorithms like **Linear Regression**, **Logistic Regression**, and **Neural Networks** use Gradient Descent to find the optimal weights for the model.
+
+*   **The Problem:** If features are on different scales, the ""cost function"" (the error surface) becomes elongated and elliptical. 
+*   **The Impact:** During gradient descent, the algorithm will ""bounce"" back and forth inefficiently as it tries to navigate this steep, distorted landscape. If the features are scaled (e.g., all between 0 and 1), the cost function becomes more spherical. This allows the algorithm to take a more direct path to the minimum, significantly **speeding up convergence** (training time).
+
+### 3. Improving Model Stability and Interpretability
+*   **Stability:** In models that use regularization (like Lasso or Ridge regression), the penalty term is applied to the coefficients. If features are not scaled, the model will apply the penalty unevenly, potentially shrinking the coefficients of features with large scales more aggressively than those with small scales, regardless of their actual importance.
+*   **Interpretability:** When features are scaled (specifically standardized to have a mean of 0 and a standard deviation of 1), the resulting model coefficients can be compared directly. You can look at the weights and immediately see which feature has the strongest influence on the prediction.
+
+---
+
+### Summary: When should you scale?
+*   **Always scale for:** KNN, SVM, K-Means, Principal Component Analysis (PCA), and Neural Networks.
+*   **Usually scale for:** Linear and Logistic Regression (to speed up training and allow for coefficient comparison).
+*   **Not necessary for:** Tree-based models (like **Decision Trees, Random Forests, and XGBoost**). These models split data based on thresholds and are invariant to the scale of the features.
+
+**Common Scaling Techniques:**
+*   **Normalization (Min-Max Scaling):** Rescales data to a fixed range, usually [0, 1].
+*   **Standardization (Z-score Scaling):** Rescales data so it has a mean of 0 and a standard deviation of 1. This is generally preferred if your data contains outliers."
+v1,eduassist-academic-qa,1,Q3,Explain precision and recall with a simple example.,gemini-3.1-flash-lite,gemini-3.1-flash-lite,2026-11-03T11:23:33.052086+00:00,2026-11-03T11:23:35.670732+00:00,success,200,STOP,2.6186348329938482,19,638,0,638,657,4.75e-06,0.000957,0.0009617499999999999,USD,False,not valid JSON: Expecting value at character 0,e5ce614647464a48a7f268e8cd3a3606,tr-6ed7314c8b9def49564c5114d7b914ed,"To understand precision and recall, imagine you are building an **AI system to identify photos of cats** from a large collection of animal pictures.
+
+Here is the breakdown:
+
+### 1. Precision (Quality)
+**Definition:** Out of all the photos the AI *labeled* as ""cat,"" how many were actually cats?
+
+*   **The Question:** ""How trustworthy is the AI when it says 'This is a cat'?""
+*   **Example:** The AI identifies 10 photos as ""cats."" You check them, and 8 are actually cats, but 2 are dogs.
+*   **Calculation:** 8 (correct cats) / 10 (total labeled as cats) = **80% Precision.**
+*   **High Precision:** Means the AI rarely makes a mistake when it claims something is a cat (low ""false alarms"").
+
+---
+
+### 2. Recall (Quantity)
+**Definition:** Out of all the actual cats in the entire collection, how many did the AI successfully find?
+
+*   **The Question:** ""Did the AI find all the cats, or did it miss some?""
+*   **Example:** There are 20 cats hidden in the collection. The AI successfully identifies 8 of them, but it missed 12 (it didn't label them as cats).
+*   **Calculation:** 8 (correct cats found) / 20 (total actual cats) = **40% Recall.**
+*   **High Recall:** Means the AI is very good at finding almost every cat in the pile (low ""misses"").
+
+---
+
+### The Trade-off
+Usually, there is a tug-of-war between the two:
+
+*   **If you want 100% Recall:** You could tell the AI to label *every single photo* as a ""cat."" You would find every cat (100% recall), but your precision would be terrible because you’d also be labeling dogs, trees, and cars as cats.
+*   **If you want 100% Precision:** You could tell the AI to only label a photo as a ""cat"" if it is 100% certain (like a perfect, high-definition close-up). You would be right every time (100% precision), but you would miss almost all the other cats in the pile (very low recall).
+
+### Summary Table
+| Metric | Focus | Goal |
+| :--- | :--- | :--- |
+| **Precision** | Accuracy of positive predictions | Don't call a dog a cat. |
+| **Recall** | Ability to find all positives | Don't miss any cats. |
+
+**In the real world:**
+*   In **Cancer Screening**, you want **High Recall** (you’d rather have a false alarm than miss a case of cancer).
+*   In **Spam Filters**, you want **High Precision** (you’d rather let a spam email through than accidentally delete an important email from your boss)."
+v1,eduassist-academic-qa,1,Q4,What is overfitting and how can it be reduced?,gemini-3.1-flash-lite,gemini-3.1-flash-lite,2026-11-03T11:23:35.675828+00:00,2026-11-03T11:23:38.585165+00:00,success,200,STOP,2.909327957997448,20,729,0,729,749,5e-06,0.0010935,0.0010985,USD,False,not valid JSON: Expecting value at character 0,e5ce614647464a48a7f268e8cd3a3606,tr-e4e54570fe5c3697ca84de4878104c81,"### What is Overfitting?
+
+**Overfitting** occurs in machine learning when a model learns the training data *too well*. Instead of learning the underlying patterns or general rules, the model memorizes the noise, random fluctuations, and specific details of the training set.
+
+Think of it like a student who memorizes the exact answers to a practice test rather than understanding the concepts. When they take the actual exam with slightly different questions, they fail because they didn't learn the logic—they only learned the specific examples.
+
+**The result:** An overfitted model performs exceptionally well on the data it has already seen (training data) but performs poorly on new, unseen data (test/validation data).
+
+---
+
+### How to Reduce Overfitting
+
+To prevent overfitting, you need to encourage the model to be simpler and more general. Here are the most common techniques:
+
+#### 1. Get More Training Data
+The more data a model sees, the harder it is for it to ""memorize"" specific instances. A larger, more diverse dataset helps the model learn the general trends rather than the noise.
+
+#### 2. Data Augmentation
+If you cannot get more data, you can artificially increase your dataset by creating variations of your existing data. For example, in image processing, you can rotate, flip, zoom, or crop images so the model learns to recognize the object regardless of its orientation.
+
+#### 3. Simplify the Model (Reduce Complexity)
+A model with too many parameters (like a deep neural network with too many layers) has the ""capacity"" to memorize noise. You can reduce overfitting by:
+*   Reducing the number of layers or neurons in a neural network.
+*   Using simpler algorithms (e.g., a linear regression instead of a high-degree polynomial).
+
+#### 4. Regularization
+Regularization adds a ""penalty"" to the model for being too complex. It forces the model to keep its weights small, which prevents it from relying too heavily on any single feature. Common types include:
+*   **L1 (Lasso) Regularization:** Can shrink some weights to zero, effectively performing feature selection.
+*   **L2 (Ridge) Regularization:** Penalizes large weights, keeping the model smooth.
+
+#### 5. Dropout (For Neural Networks)
+Dropout is a technique where, during each training iteration, a random percentage of neurons are ""turned off"" or ignored. This forces the network to learn redundant representations and prevents it from relying on specific neurons, making the model much more robust.
+
+#### 6. Early Stopping
+During training, you monitor the model’s performance on a validation set. As you train, the error on the training set will continue to go down, but eventually, the error on the validation set will start to go back up. **Early stopping** means you halt the training process at the exact moment the validation error begins to rise, before the model starts overfitting.
+
+#### 7. Cross-Validation
+Using techniques like **K-Fold Cross-Validation** allows you to train and test the model on different subsets of your data. This ensures that the model’s performance is consistent across the entire dataset, rather than just being lucky with a specific split.
+
+---
+
+### Summary
+*   **Overfitting =** High accuracy on training data, low accuracy on new data.
+*   **The Goal =** Balance complexity and generalization.
+*   **The Fix =** Use more data, simplify the model, apply regularization, or stop training early."
+v1,eduassist-academic-qa,1,Q5,Why is experiment tracking important in MLOps?,gemini-3.1-flash-lite,gemini-3.1-flash-lite,2026-11-03T11:23:38.590146+00:00,2026-11-03T11:23:48.052775+00:00,success,200,STOP,9.462626166990958,20,640,0,640,660,5e-06,0.0009600000000000001,0.0009650000000000001,USD,False,not valid JSON: Expecting value at character 0,e5ce614647464a48a7f268e8cd3a3606,tr-dfd496b36e0b5a195728f384c1914a85,"In MLOps, **experiment tracking** is the process of logging, organizing, and comparing the various parameters, code versions, and datasets used during the model development lifecycle.
+
+Think of it as a ""flight recorder"" for your machine learning projects. Here is why it is critical:
+
+### 1. Reproducibility (The ""It Worked on My Machine"" Problem)
+Machine learning is inherently experimental. You might change a learning rate, swap a feature, or adjust a neural network layer. Without tracking, if you achieve a great result, you may be unable to recreate it later. Tracking ensures that you can link a specific model version back to the exact code, data snapshot, and hyperparameters used to create it.
+
+### 2. Efficient Iteration and Comparison
+Data scientists often run dozens of experiments to find the best model. Tracking tools (like MLflow, Weights & Biases, or Comet) allow you to:
+*   **Compare side-by-side:** See how changing a hyperparameter (e.g., batch size) affected the final accuracy or loss.
+*   **Avoid redundant work:** You won’t waste time re-running experiments you’ve already tried, and you can easily identify which ""path"" led to the best performance.
+
+### 3. Debugging and Troubleshooting
+When a model performs poorly in production, you need to investigate why. If you have tracked your experiments, you can look back at the training logs to see if:
+*   The training data was skewed.
+*   The model suffered from overfitting.
+*   The hardware environment was different from the one used during development.
+Without tracking, you are essentially ""flying blind"" when trying to diagnose model failure.
+
+### 4. Collaboration and Knowledge Sharing
+In a team environment, experiment tracking acts as a **centralized source of truth**. If a teammate leaves or is out of the office, others can look at the experiment logs to understand what has already been tested. It prevents team members from duplicating each other's work and allows for better peer review of model performance.
+
+### 5. Compliance and Auditing
+In regulated industries (like finance or healthcare), you are often required to explain *why* a model made a specific decision. Experiment tracking provides an audit trail that shows how a model was developed, what data it was trained on, and how it was validated. This is essential for model governance and meeting legal requirements.
+
+---
+
+### Summary: The ""What"" vs. The ""Why""
+| Feature | Why it matters |
+| :--- | :--- |
+| **Hyperparameters** | Allows for tuning and optimization. |
+| **Code Versioning** | Ensures you know exactly which logic produced the model. |
+| **Data Versioning** | Ensures you know which data subset was used (crucial for data drift). |
+| **Metrics/Artifacts** | Provides proof of performance and model quality. |
+
+**In short:** Experiment tracking transforms machine learning from a ""trial-and-error"" art form into a **rigorous, repeatable engineering discipline.**"
+v2,eduassist-academic-qa,2,Q1,What is the difference between supervised and unsupervised learning?,gemini-3.1-flash-lite,gemini-3.1-flash-lite,2026-11-03T11:23:49.966238+00:00,2026-11-03T11:23:51.818299+00:00,success,200,STOP,1.8520478749996983,44,414,0,414,458,1.1e-05,0.000621,0.0006320000000000001,USD,False,not valid JSON: Expecting value at character 0,2085e35041324735b80d81ebc7c6d287,tr-083833388133c61723db527e2411306e,"In machine learning, the primary difference between supervised and unsupervised learning lies in whether the data used to train the model is **labeled**.
+
+### 1. Supervised Learning
+Think of this as learning with a **teacher**. 
+
+*   **How it works:** You provide the computer with a dataset that includes both the input data and the correct answers (labels). The model learns by comparing its predictions to the actual answers and adjusting itself until it gets them right.
+*   **The Goal:** To predict outcomes for new, unseen data.
+*   **Common Examples:**
+    *   **Classification:** Sorting emails into ""spam"" or ""not spam.""
+    *   **Regression:** Predicting the price of a house based on its square footage and location.
+
+### 2. Unsupervised Learning
+Think of this as learning through **discovery**.
+
+*   **How it works:** You provide the computer with data that has no labels or ""correct answers."" The model must explore the data on its own to find hidden patterns, structures, or groupings without any guidance.
+*   **The Goal:** To discover the underlying structure or distribution of the data.
+*   **Common Examples:**
+    *   **Clustering:** Grouping customers into different segments based on their purchasing habits (e.g., ""budget shoppers"" vs. ""luxury buyers"").
+    *   **Association:** Identifying that people who buy bread often buy butter at the same time.
+
+---
+
+### Summary Comparison Table
+
+| Feature | Supervised Learning | Unsupervised Learning |
+| :--- | :--- | :--- |
+| **Data** | Labeled (Input + Output) | Unlabeled (Input only) |
+| **Feedback** | Direct feedback (the model knows if it's right) | No feedback (the model finds its own patterns) |
+| **Goal** | Predict outcomes | Find hidden structures |
+| **Analogy** | A student with an answer key | A researcher exploring a new environment |"
+v2,eduassist-academic-qa,2,Q2,Why is feature scaling important before training a machine learning model?,gemini-3.1-flash-lite,gemini-3.1-flash-lite,2026-11-03T11:23:51.822019+00:00,2026-11-03T11:23:54.372428+00:00,success,200,STOP,2.5504001670051366,46,462,0,462,508,1.15e-05,0.000693,0.0007045,USD,False,not valid JSON: Expecting value at character 0,2085e35041324735b80d81ebc7c6d287,tr-280369c9faed5e89a6b26b493ec6c50e,"Feature scaling is a crucial preprocessing step in machine learning because most algorithms calculate the **distance** between data points to make predictions. 
+
+Here is why it is necessary:
+
+### 1. Preventing ""Dominance"" by Large Numbers
+Many algorithms (like K-Nearest Neighbors, Support Vector Machines, and K-Means Clustering) use distance metrics like Euclidean distance. If one feature has a range of 0–1,000 (e.g., annual income) and another has a range of 0–1 (e.g., a normalized score), the algorithm will perceive the income feature as significantly more important simply because the numbers are larger. Scaling ensures that all features contribute equally to the model’s decision-making process.
+
+### 2. Speeding Up Gradient Descent
+Algorithms that use **Gradient Descent** (like Linear Regression, Logistic Regression, and Neural Networks) converge much faster when features are on a similar scale. 
+* **Without scaling:** The ""cost function"" (the error surface) becomes elongated and narrow. The algorithm takes a ""zig-zag"" path toward the minimum, which is computationally inefficient.
+* **With scaling:** The cost function becomes more spherical, allowing the algorithm to take a direct, straight path to the optimal solution, significantly reducing training time.
+
+### 3. Improving Model Stability
+When features are on vastly different scales, the model can become sensitive to small changes in the input data. Scaling helps the model remain stable and prevents it from becoming biased toward features with larger magnitudes, leading to better generalization on new, unseen data.
+
+---
+
+### Common Methods
+* **Normalization (Min-Max Scaling):** Rescales data to a fixed range, usually **0 to 1**. This is useful when you know your data does not have extreme outliers.
+* **Standardization (Z-score Scaling):** Rescales data so that it has a **mean of 0 and a standard deviation of 1**. This is generally preferred for algorithms that assume data follows a normal distribution and is more robust to outliers.
+
+**Summary:** Think of feature scaling as putting all your variables on a ""level playing field."" It ensures that the model focuses on the patterns in the data rather than the units of measurement."
+v2,eduassist-academic-qa,2,Q3,Explain precision and recall with a simple example.,gemini-3.1-flash-lite,gemini-3.1-flash-lite,2026-11-03T11:23:54.375261+00:00,2026-11-03T11:23:58.322147+00:00,success,200,STOP,3.9468809589889133,43,453,0,453,496,1.075e-05,0.0006795,0.00069025,USD,False,not valid JSON: Expecting value at character 0,2085e35041324735b80d81ebc7c6d287,tr-b91d39931f52cd9e9ebe9b4b9853e444,"To understand **precision** and **recall**, imagine you are using an AI tool to identify **""spam emails""** in your inbox.
+
+### The Scenario
+*   **Total emails:** 100
+*   **Actual spam:** 10
+*   **Emails the AI labeled as ""spam"":** 8
+
+Out of those 8 emails the AI flagged, **6 were actually spam**, and **2 were important emails** (false alarms).
+
+---
+
+### 1. Precision (Quality)
+**Definition:** Out of all the emails the AI *claimed* were spam, how many were *actually* spam? 
+
+*   **Formula:** (Correctly identified spam) / (Total emails flagged as spam)
+*   **Calculation:** 6 / 8 = **75%**
+*   **In simple terms:** Precision tells you how much you can trust the AI when it says something is spam. High precision means fewer ""false alarms.""
+
+### 2. Recall (Quantity)
+**Definition:** Out of all the *actual* spam emails in your inbox, how many did the AI manage to catch?
+
+*   **Formula:** (Correctly identified spam) / (Total actual spam)
+*   **Calculation:** 6 / 10 = **60%**
+*   **In simple terms:** Recall tells you how good the AI is at finding all the spam. High recall means the AI isn't missing many spam emails.
+
+---
+
+### Summary Comparison
+*   **Precision** is about **accuracy**: ""Of the ones I picked, how many were right?""
+*   **Recall** is about **completeness**: ""Of all the ones that exist, how many did I find?""
+
+**The Trade-off:** Usually, there is a balance. If you make the AI ""stricter"" to increase precision (so it only flags emails it is 100% sure about), it will likely miss more spam, which lowers your recall. If you make it ""looser"" to catch every single piece of spam (increasing recall), you will likely flag more important emails by mistake, which lowers your precision."
+v2,eduassist-academic-qa,2,Q4,What is overfitting and how can it be reduced?,gemini-3.1-flash-lite,gemini-3.1-flash-lite,2026-11-03T11:23:58.326498+00:00,2026-11-03T11:24:00.702337+00:00,success,200,STOP,2.3758313750004163,44,602,0,602,646,1.1e-05,0.0009029999999999999,0.000914,USD,False,not valid JSON: Expecting value at character 0,2085e35041324735b80d81ebc7c6d287,tr-59e2e5028fe72897f44f9bbe242eccbd,"### What is Overfitting?
+
+**Overfitting** occurs when a machine learning model learns the training data *too well*. Instead of learning the general patterns or underlying rules of the data, the model memorizes the specific noise, random fluctuations, and outliers present in the training set.
+
+Think of it like a student who memorizes the exact answers to a practice exam instead of understanding the concepts. While they will get a perfect score on the practice test, they will likely fail the actual exam because they cannot apply their knowledge to new, unseen questions.
+
+In technical terms, an overfitted model has **low bias but high variance**. It performs exceptionally well on training data but performs poorly on new, unseen data (testing data).
+
+---
+
+### How to Reduce Overfitting
+
+To prevent overfitting, you need to encourage the model to generalize better. Here are the most common strategies:
+
+#### 1. Increase Training Data
+The more diverse data a model sees, the harder it is for it to ""memorize"" specific noise. More data helps the model learn the true underlying patterns rather than focusing on individual quirks.
+
+#### 2. Simplify the Model
+If a model is too complex (e.g., a deep neural network with too many layers or a decision tree that is too deep), it has the capacity to memorize noise. Reducing the number of parameters or simplifying the architecture forces the model to focus only on the most important features.
+
+#### 3. Regularization
+Regularization techniques add a ""penalty"" to the model for being too complex. 
+*   **L1 (Lasso) and L2 (Ridge) Regularization:** These add a penalty term to the loss function, discouraging the model from assigning overly large weights to input features.
+*   **Dropout (for Neural Networks):** During training, some neurons are randomly ""turned off"" or ignored. This prevents the model from relying too heavily on specific neurons and forces it to learn more robust features.
+
+#### 4. Early Stopping
+During the training process, you monitor the model’s performance on a separate ""validation set."" As training continues, the model’s error on the training set will keep decreasing, but eventually, the error on the validation set will start to increase. **Early stopping** means halting the training process at the exact moment the validation error begins to rise.
+
+#### 5. Cross-Validation
+Techniques like **k-fold cross-validation** involve splitting your data into multiple subsets. You train the model on different combinations of these subsets. This ensures that the model is tested on various parts of the data, providing a more accurate estimate of how it will perform in the real world.
+
+### Summary
+Overfitting is essentially ""over-training"" on specific data. You can combat it by **simplifying the model**, **adding more data**, or **using techniques that penalize complexity**, ensuring the model learns general rules rather than specific examples."
+v2,eduassist-academic-qa,2,Q5,Why is experiment tracking important in MLOps?,gemini-3.1-flash-lite,gemini-3.1-flash-lite,2026-11-03T11:24:00.706330+00:00,2026-11-03T11:24:07.146206+00:00,success,200,STOP,6.4398694160045125,44,396,0,396,440,1.1e-05,0.0005939999999999999,0.000605,USD,False,not valid JSON: Expecting value at character 0,2085e35041324735b80d81ebc7c6d287,tr-4d05e7065966d30dcbbe0f1bbdfd4d8a,"In MLOps, **experiment tracking** is the process of recording every detail of your machine learning model development—from the data used and the code version to the hyperparameters and final performance metrics.
+
+It is essential for the following four reasons:
+
+### 1. Reproducibility
+Machine learning is highly sensitive to small changes. If you cannot recreate a specific model result later, your work is effectively lost. Tracking ensures that if you need to revisit a model six months from now, you have a ""blueprint"" of exactly how it was built, allowing you to reproduce the exact same results.
+
+### 2. Efficient Iteration (The ""Trial and Error"" Log)
+Data science involves constant experimentation—testing different algorithms, features, and settings. Without tracking, it is easy to lose track of which combination worked best. A tracking system acts as a centralized dashboard, allowing you to compare different runs side-by-side to see which changes actually improved performance and which did not.
+
+### 3. Debugging and Troubleshooting
+When a model performs poorly or behaves unexpectedly in production, you need to investigate why. By looking back at your experiment logs, you can identify if the issue stems from a change in the training data, a specific hyperparameter setting, or a bug in the code. It turns ""guessing"" into ""data-driven investigation.""
+
+### 4. Collaboration and Knowledge Sharing
+In a team environment, you don't want to repeat experiments that a colleague has already tried. Experiment tracking creates a shared history of the project. It prevents redundant work and allows team members to learn from each other’s successes and failures, which significantly speeds up the development lifecycle.
+
+***
+
+**Summary:** Think of experiment tracking as a **""lab notebook"" for your code.** Just as a scientist must record their methods to prove their findings, an ML engineer must track their experiments to ensure their models are reliable, explainable, and scalable."
+v3,eduassist-academic-qa,3,Q1,What is the difference between supervised and unsupervised learning?,gemini-3.1-flash-lite,gemini-3.1-flash-lite,2026-11-03T11:24:09.165102+00:00,2026-11-03T11:24:15.030110+00:00,success,200,STOP,5.865004874998704,85,165,0,165,250,2.125e-05,0.0002475,0.00026875,USD,True,,6082194924ea47f9b03e0d450984f2fa,tr-d85ddd34beceb36b673dd1523f7fe08c,"{
+  ""answer"": ""Supervised learning involves training a model on a labeled dataset where the input data is paired with the correct output, allowing the algorithm to learn a mapping function. In contrast, unsupervised learning uses unlabeled data, requiring the algorithm to identify hidden patterns, structures, or groupings within the data without explicit guidance."",
+  ""confidence"": ""high"",
+  ""key_points"": [
+    ""Supervised learning uses labeled data; unsupervised learning uses unlabeled data."",
+    ""Supervised learning aims to predict outcomes or classify data; unsupervised learning aims to discover underlying patterns or clusters."",
+    ""Common supervised tasks include regression and classification; common unsupervised tasks include clustering and association."",
+    ""Supervised learning requires feedback or ground truth; unsupervised learning operates without external guidance.""
+  ]
+}"
+v3,eduassist-academic-qa,3,Q2,Why is feature scaling important before training a machine learning model?,gemini-3.1-flash-lite,gemini-3.1-flash-lite,2026-11-03T11:24:15.039268+00:00,2026-11-03T11:24:16.166056+00:00,success,200,STOP,1.1267725420038914,87,142,0,142,229,2.175e-05,0.00021300000000000003,0.00023475000000000004,USD,True,,6082194924ea47f9b03e0d450984f2fa,tr-b0b7f78d917b2ac7e16f4f895561b65e,"{
+  ""answer"": ""Feature scaling is essential because many machine learning algorithms calculate distances between data points or rely on gradient-based optimization. When features have different scales, variables with larger magnitudes can disproportionately influence the model, leading to biased results and slower convergence during training."",
+  ""confidence"": ""high"",
+  ""key_points"": [
+    ""Prevents features with larger ranges from dominating the objective function"",
+    ""Accelerates the convergence speed of gradient descent algorithms"",
+    ""Ensures distance-based algorithms like K-Nearest Neighbors and SVM perform accurately"",
+    ""Improves the stability and interpretability of model coefficients in linear models""
+  ]
+}"
+v3,eduassist-academic-qa,3,Q3,Explain precision and recall with a simple example.,gemini-3.1-flash-lite,gemini-3.1-flash-lite,2026-11-03T11:24:16.173995+00:00,2026-11-03T11:24:17.509925+00:00,success,200,STOP,1.335922333993949,84,234,0,234,318,2.1e-05,0.00035099999999999997,0.000372,USD,True,,6082194924ea47f9b03e0d450984f2fa,tr-0a10e43d4f613cdcd967110d018f50d1,"{
+  ""answer"": ""Precision and recall are metrics used to evaluate classification models. Precision measures the accuracy of positive predictions, answering 'of all instances predicted as positive, how many were actually positive?' Recall measures the ability to find all positive instances, answering 'of all actual positive instances, how many did we correctly identify?' For example, in a spam filter, high precision means that when an email is marked as spam, it is almost certainly spam. High recall means the filter successfully catches almost all spam emails, even if it occasionally mislabels a legitimate one."",
+  ""confidence"": ""high"",
+  ""key_points"": [
+    ""Precision focuses on the quality of positive predictions (True Positives / (True Positives + False Positives))."",
+    ""Recall focuses on the quantity of positive instances captured (True Positives / (True Positives + False Negatives))."",
+    ""There is often a trade-off between precision and recall depending on the model's threshold."",
+    ""Precision is critical when false positives are costly, while recall is critical when missing a positive case is costly.""
+  ]
+}"
+v3,eduassist-academic-qa,3,Q4,What is overfitting and how can it be reduced?,gemini-3.1-flash-lite,gemini-3.1-flash-lite,2026-11-03T11:24:17.513251+00:00,2026-11-03T11:24:20.785371+00:00,success,200,STOP,3.2721145840041572,85,181,0,181,266,2.125e-05,0.00027150000000000004,0.00029275000000000004,USD,True,,6082194924ea47f9b03e0d450984f2fa,tr-edb63f76fa4def4fdcd55993a9126a2d,"{
+  ""answer"": ""Overfitting is a modeling error that occurs when a machine learning model learns the training data too well, capturing noise and specific fluctuations rather than the underlying pattern, which results in poor performance on unseen data. It can be reduced by increasing the training dataset size, using regularization techniques like L1 or L2, applying dropout in neural networks, performing cross-validation, or using early stopping during training."",
+  ""confidence"": ""high"",
+  ""key_points"": [
+    ""Overfitting occurs when a model learns noise instead of the signal."",
+    ""It leads to high variance and poor generalization to new data."",
+    ""Regularization techniques penalize complex models."",
+    ""Increasing training data helps the model learn more robust patterns."",
+    ""Cross-validation and early stopping prevent the model from memorizing training samples.""
+  ]
+}"
+v3,eduassist-academic-qa,3,Q5,Why is experiment tracking important in MLOps?,gemini-3.1-flash-lite,gemini-3.1-flash-lite,2026-11-03T11:24:20.794759+00:00,2026-11-03T11:24:22.068347+00:00,success,200,STOP,1.273573957994813,85,158,0,158,243,2.125e-05,0.000237,0.00025825,USD,True,,6082194924ea47f9b03e0d450984f2fa,tr-c24b033ab77ce797c36f6bf60b96aa41,"{
+  ""answer"": ""Experiment tracking is critical in MLOps because it provides a systematic way to record, organize, and compare the various iterations of machine learning models, including hyperparameters, code versions, datasets, and performance metrics. This practice ensures reproducibility, facilitates collaboration among team members, and allows for efficient debugging and model auditing throughout the machine learning lifecycle."",
+  ""confidence"": ""high"",
+  ""key_points"": [
+    ""Ensures reproducibility of model results"",
+    ""Enables efficient comparison of different model versions and hyperparameters"",
+    ""Facilitates collaboration and knowledge sharing within data science teams"",
+    ""Provides an audit trail for model governance and compliance"",
+    ""Accelerates debugging by isolating variables across experiments""
+  ]
+}"

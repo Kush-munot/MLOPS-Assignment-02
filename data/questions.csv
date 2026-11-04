@@ -1,0 +1,6 @@
+question_id,question
+Q1,What is the difference between supervised and unsupervised learning?
+Q2,Why is feature scaling important before training a machine learning model?
+Q3,Explain precision and recall with a simple example.
+Q4,What is overfitting and how can it be reduced?
+Q5,Why is experiment tracking important in MLOps?
